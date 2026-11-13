@@ -7,6 +7,7 @@
 - **Format Prioritization:** Flags and sorts folders containing `.mp4` files to the top of the report.
 - **Interactive Nested HTML Tree:** Self-contained dark-mode HTML output with live search filtering, keyboard-friendly expand/collapse, and persistent browser checkboxes (`localStorage`) to track processed folders.
 - **Low-Impact Crawling:** Uses `os.scandir()` to minimize `stat()` calls over network mounts and includes configurable per-entry micro-sleep throttling (`--sleep`) so busy media servers stay responsive.
+- **Clean One-Shot Execution:** Runs as a single-pass task—not a lingering background daemon. Once it finishes scanning and writes your report, it cleans up its checkpoint file and exits completely, freeing all CPU and RAM.
 - **Crash-Resilient Checkpointing:** Periodically saves progress to a JSON checkpoint file and automatically resumes if interrupted.
 
 ## Quick Start
@@ -36,6 +37,9 @@ podman run --rm \
   -v "\$PWD":/output \
   data-saver-video-finder /media --min-size-mb 500 -o /output/video_tree.html
 ```
+
+
+> **Note:** Unlike media servers that stay running 24/7, `DataSaverVideoFinder` is a one-shot batch utility. Once the scan completes and your `.html` or `.docx` file is saved, the container exits and automatically removes itself (`--rm`), leaving zero background processes behind.
 
 ## CLI Options
 

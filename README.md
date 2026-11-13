@@ -39,7 +39,7 @@ podman run --rm \
 ```
 
 
-> **Note:** Unlike media servers that stay running 24/7, `DataSaverVideoFinder` is a one-shot batch utility. Once the scan completes and your `.html` or `.docx` file is saved, the container exits and automatically removes itself (`--rm`), leaving zero background processes behind.
+> **Note:** No waste, `DataSaverVideoFinder` is a one-shot batch utility. Once the scan completes and your `.html` or `.docx` file is saved, the container exits and automatically removes itself (`--rm`), leaving zero background processes behind.
 
 ## CLI Options
 

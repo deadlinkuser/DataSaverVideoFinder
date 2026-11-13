@@ -52,7 +52,7 @@ podman run --rm \
 | `--checkpoint` | `scan_checkpoint.json` | Path for resume state file (pass `""` to disable) |
 
 ## AI Disclosure
-This project was developed collaboratively with AI assistance (Google Gemini) for code architecture, HTML/CSS tree generation, and documentation. All code has been reviewed, tested, and verified on a live Linux/ZFS media environment.
+This project was developed collaboratively with AI assistance (Google Gemini) for code architecture correction & HTML/CSS tree generation. All code has been reviewed, tested, and verified on a live Linux/ZFS media environment.
 
 ## License
 Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more information.

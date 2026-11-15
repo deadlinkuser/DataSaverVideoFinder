@@ -175,7 +175,7 @@ def export_html(results, output_path, min_mb):
             return children_html
         open_attr = " open" if node["has_mp4"] else ""
         safe_key = html.escape(full_key, quote=True)
-        return f"""<details{open_attr} data-key="{safe_key}">
+        return f"""<details data-key="{safe_key}">
         <summary>
             <input type="checkbox" class="done-cb" data-key="{safe_key}" aria-label="Mark {html.escape(name, quote=True)} as processed" onclick="event.stopPropagation(); toggleDone(this)">
             <span class="folder-label">📁 <strong>{html.escape(name)}</strong> {mp4_badge} {meta_html}</span>
@@ -215,6 +215,7 @@ def export_html(results, output_path, min_mb):
   <button onclick="document.querySelectorAll('#tree details').forEach(d=>d.open=false)">Collapse All</button>
   <button id="toggleHideBtn" onclick="toggleHideCompleted()">Hide Completed</button>
   <button onclick="clearProgress()">Reset Checkboxes</button>
+  <button onclick="saveHtmlFile()">Save HTML</button>
   <span class="status-pill" id="progressText">0 checked</span>
 </div>
 <div id="tree">{render("Root", tree, is_root=True)}</div>
@@ -277,8 +278,33 @@ function filterTree() {{
   }});
 }}
 
+function saveHtmlFile() {{
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb => {{
+    if (cb.checked) {{
+      cb.setAttribute('checked', 'checked');
+    }} else {{
+      cb.removeAttribute('checked');
+    }}
+  }});
+
+  const stateString = JSON.stringify(checkedState);
+  let htmlContent = '<!DOCTYPE html>\\n' + document.documentElement.outerHTML;
+  htmlContent = htmlContent.replace(
+    /let checkedState\\s*=\\s*JSON\\.parse\\(localStorage\\.getItem\\(STORAGE_KEY\\)\\s*\\|\\|\\s*'\\{{}}\\'\);/,
+    `let checkedState = JSON.parse(localStorage.getItem(STORAGE_KEY) || '${{stateString.replace(/'/g, "\\\\'")}}');`
+  );
+
+  const blob = new Blob([htmlContent], {{ type: 'text/html;charset=utf-8' }});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'DataSaverVideoFinder-saved.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}}
+
 applyState();
 </script></body></html>"""
+
 
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(page)
